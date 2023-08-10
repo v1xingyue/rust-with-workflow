@@ -1,0 +1,51 @@
+name: build for release
+on:
+  push:
+    tags:
+      - release*
+  workflow_dispatch:
+
+jobs:
+  build-binary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1.0.6
+
+      - run: |
+          mkdir -p target &&  go mod tidy && go build -trimpath -ldflags "-w -s -extldflags '-static'" -o target/${{ matrix.output }}
+          echo ${{ github.sha }} > target/Release.txt
+          date >> target/Release.txt
+          cat target/Release.txt
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: |
+            target/Release.txt
+            target/release/${{ github.event.repository.name }}
+            
+
+  upload-release:
+    permissions:
+      contents: write
+    needs:
+      - build-binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: target
+          path: target
+
+      - run: ls -al target && ls -R target/ && file target/
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: target/*
