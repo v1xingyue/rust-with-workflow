@@ -47,6 +47,7 @@ jobs:
           path: target
 
       - run: ls -al target && ls -R target/ && file target/
+      - run: mv target/release/${{ github.event.repository.name }} target/${{ github.event.repository.name }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
