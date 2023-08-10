@@ -49,7 +49,7 @@ jobs:
           name: target
           path: |
             target/Release.txt
-            target/release/${{ github.event.repository.name }}
+            target/${{ matrix.arch }}/release/${{ github.event.repository.name }} 
             
 
   upload-release:
