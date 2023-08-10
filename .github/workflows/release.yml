@@ -39,6 +39,7 @@ jobs:
 
       - run: |
           cargo build --release --target ${{ matrix.arch }}
+          ls -R target/
           echo ${{ github.sha }} > target/Release.txt
           date >> target/Release.txt
           cat target/Release.txt
