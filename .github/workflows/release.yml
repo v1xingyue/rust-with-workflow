@@ -35,9 +35,13 @@ jobs:
           override: true
           components: rustfmt, clippy
           target: ${{ matrix.arch }}
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target ${{ matrix.arch }}
 
       - run: |
-          cargo build --release --target ${{ matrix.arch }}
           mv target/${{ matrix.arch }}/release/${{ github.event.repository.name }} target/${{ matrix.output }}
           ls -R target/
           echo ${{ github.sha }} > target/Release.txt
