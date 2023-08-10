@@ -16,7 +16,7 @@ jobs:
       - uses: actions-rs/toolchain@v1.0.6
 
       - run: |
-          mkdir -p target &&  go mod tidy && go build -trimpath -ldflags "-w -s -extldflags '-static'" -o target/${{ matrix.output }}
+          cargo build --release 
           echo ${{ github.sha }} > target/Release.txt
           date >> target/Release.txt
           cat target/Release.txt
