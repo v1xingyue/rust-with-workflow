@@ -16,14 +16,17 @@ jobs:
           - release_on: ubuntu_x86
             os: ubuntu-20.04
             bin: rust-with-workflow
+            bin_rename: rust-with-workflow-linux-x86
 
           - release_on: Windows_x86
             os: windows-latest
             bin: rust-with-workflow.exe
+            bin_rename: rust-with-workflow.exe
 
           - release_on: macOS_x86
             os: macOS-latest
             bin: rust-with-workflow
+            bin_rename: rust-with-workflow-darwin-x86
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,13 +41,13 @@ jobs:
         run: cargo build --release 
       
       - name: check build binary
-        run: ls -R target/release/${{ matrix.bin }}
+        run: mv target/release/${{ matrix.bin }} target/release/${{ matrix.bin_rename }}
       
       - name: upload build binary
         uses: actions/upload-artifact@v3
         with:
           name: target
-          path: target/release/${{ matrix.bin }}
+          path: target/release/${{ matrix.bin_rename }}
   
   upload-release:
     permissions:
