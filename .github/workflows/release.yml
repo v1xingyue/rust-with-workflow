@@ -7,23 +7,24 @@ on:
   
 jobs:
   release:
-    name: Release - ${{ matrix.platform.release_on }}
+    name: Release - ${{ matrix.release_on }}
     strategy:
+      fail-fast: true
       matrix:
-        platform:
+        include:
           - release_on: ubuntu_x86
             os: ubuntu-20.04
             bin: precious
 
-          - release_for: Windows_x86
+          - release_on: Windows_x86
             os: windows-latest
             bin: precious.exe
 
-          - release_for: macOS_x86
+          - release_on: macOS_x86
             os: macOS-latest
             bin: precious
 
-    runs-on: ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
