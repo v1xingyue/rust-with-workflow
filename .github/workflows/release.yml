@@ -1,4 +1,4 @@
-name: build for release
+name: release job list
 on:
   push:
     tags:
@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   
 jobs:
-  release:
+
+  build-release-file:
     name: Release - ${{ matrix.release_on }}
     strategy:
       fail-fast: true
@@ -44,3 +45,25 @@ jobs:
         with:
           name: target
           path: target/release/${{ matrix.bin }}
+  
+  upload-release:
+    permissions:
+      contents: write
+    needs:
+      - build-release-file
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: target
+          path: target
+          
+      - run: ls -al target && ls -R target/ && file target/
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: target/*  
