@@ -47,13 +47,13 @@ jobs:
       - name: check build binary
         run: |
           ls -R target/
-          mv target/release/${{ matrix.bin }} target/release/${{ matrix.bin_rename }}
+          mv target/${{matrix.target}}/release/${{ matrix.bin }} target/${{matrix.target}}/release/${{ matrix.bin_rename }}
       
       - name: upload build binary
         uses: actions/upload-artifact@v3
         with:
           name: target
-          path: target/release/${{ matrix.bin_rename }}
+          path: target/${{matrix.target}}/release/${{ matrix.bin_rename }}
   
   upload-release:
     permissions:
