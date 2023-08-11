@@ -35,3 +35,6 @@ jobs:
 
       - name: build binary
         run: cargo build --release 
+      
+      - name: check build 
+        run: ls -R target/
