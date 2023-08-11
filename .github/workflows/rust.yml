@@ -15,6 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: |
+        rustup target  add aarch64-apple-darwin
         rustup show
-        cargo build --verbose
+        cargo build --target aarch64-apple-darwin	 --verbose
         
