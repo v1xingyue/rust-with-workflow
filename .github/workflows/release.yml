@@ -14,7 +14,7 @@ jobs:
       matrix:
         include:
           - release_on: ubuntu_x86
-            os: macOS-latest
+            os: ubuntu-latest
             bin: rust-with-workflow
             bin_rename: rust-with-workflow-linux-x86
             target: x86_64-unknown-linux-gnu
