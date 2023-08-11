@@ -39,13 +39,15 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          targets: x86_64-unknown-linux-gnu,x86_64-pc-windows-gnu,x86_64-apple-darwin
+          target: ${{matrix.target}}
 
       - name: build binary
         run: cargo build --release --target ${{matrix.target}}
       
       - name: check build binary
-        run: mv target/release/${{ matrix.bin }} target/release/${{ matrix.bin_rename }}
+        run: |
+          ls -R target/
+          mv target/release/${{ matrix.bin }} target/release/${{ matrix.bin_rename }}
       
       - name: upload build binary
         uses: actions/upload-artifact@v3
