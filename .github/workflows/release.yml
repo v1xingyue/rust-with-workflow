@@ -36,6 +36,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
+          targets: x86_64-unknown-linux-gnu,x86_64-apple-darwin,armv7-unknown-linux-gnueabihf,aarch64-apple-darwin
 
       - name: build binary
         run: cargo build --release 
