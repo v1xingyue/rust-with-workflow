@@ -14,15 +14,15 @@ jobs:
         include:
           - release_on: ubuntu_x86
             os: ubuntu-20.04
-            bin: precious
+            bin: rust-with-workflow
 
           - release_on: Windows_x86
             os: windows-latest
-            bin: precious.exe
+            bin: rust-with-workflow.exe
 
           - release_on: macOS_x86
             os: macOS-latest
-            bin: precious
+            bin: rust-with-workflow
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -36,5 +36,11 @@ jobs:
       - name: build binary
         run: cargo build --release 
       
-      - name: check build 
-        run: ls -R target/
+      - name: check build binary
+        run: ls -R target/release/${{ matrix.bin }}
+      
+      - name: upload build binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: target/release/${{ matrix.bin }}
