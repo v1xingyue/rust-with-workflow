@@ -17,16 +17,19 @@ jobs:
             os: ubuntu-20.04
             bin: rust-with-workflow
             bin_rename: rust-with-workflow-linux-x86
+            target: x86_64-unknown-linux-gnu
 
           - release_on: Windows_x86
             os: windows-latest
             bin: rust-with-workflow.exe
             bin_rename: rust-with-workflow.exe
+            target: x86_64-pc-windows-gnu
 
           - release_on: macOS_x86
             os: macOS-latest
             bin: rust-with-workflow
             bin_rename: rust-with-workflow-darwin-x86
+            target: x86_64-apple-darwin
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -36,10 +39,10 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          targets: x86_64-unknown-linux-gnu,x86_64-apple-darwin,armv7-unknown-linux-gnueabihf,aarch64-apple-darwin
+          targets: x86_64-unknown-linux-gnu,x86_64-pc-windows-gnu,x86_64-apple-darwin
 
       - name: build binary
-        run: cargo build --release 
+        run: cargo build --release --target ${{matrix.target}}
       
       - name: check build binary
         run: mv target/release/${{ matrix.bin }} target/release/${{ matrix.bin_rename }}
